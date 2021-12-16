@@ -1,13 +1,11 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const dotenv = require("dotenv");
 const { DataTypes } = require("sequelize");
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
-dotenv.config();
 
 const sequelize = new Sequelize(
   `${process.env.DATABASE}`,
