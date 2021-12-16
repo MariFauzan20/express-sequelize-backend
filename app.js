@@ -1,13 +1,23 @@
 const express = require("express");
 const Sequelize = require("sequelize");
+const dotenv = require("dotenv");
 const { DataTypes } = require("sequelize");
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+dotenv.config();
 
-const sequelize = new Sequelize(`${process.env.DATABASE_URL}`);
+const sequelize = new Sequelize(
+  `${process.env.DATABASE}`,
+  `${process.env.USERNAME}`,
+  `${process.env.PASSWORD}`,
+  {
+    host: `${process.env.HOST}`,
+    port: `${process.env.PORT}`,
+  }
+);
 
 async function checkConnection() {
   await sequelize
@@ -42,6 +52,15 @@ const hewan = sequelize.define(
     updatedAt: true,
   }
 );
+
+app.get("/ping", (req, res) => {
+  const ready = {
+    ready: true,
+    timestamp: Date.now().toString,
+  };
+
+  res.send(ready);
+});
 
 app.get("/hewan", (req, res) => {
   hewan
